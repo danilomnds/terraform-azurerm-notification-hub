@@ -31,7 +31,7 @@ variable "tags" {
 
 variable "hubs_parameters" {
   description = "Map of Notification Hub parameters"
-  type = list(object({
+  type = map(object({
     name = string
     apns_credential = optional(object({
       application_mode = string
@@ -44,7 +44,7 @@ variable "hubs_parameters" {
       api_key = string
     }))
   }))
-  default = []
+  default = {}
 }
 
 variable "azure_ad_groups" {

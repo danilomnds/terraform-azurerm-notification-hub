@@ -17,13 +17,13 @@ resource "azurerm_notification_hub" "hub" {
   depends_on = [
     azurerm_notification_hub_namespace.hub_namespace
   ]
-  for_each            = var.hubs_parameters != null ? { for k, v in toset(var.hubs_parameters) : k => v } : []
+  for_each            = var.hubs_parameters != null ? { for k, v in var.hubs_parameters : k => v if v != null } : {}
   name                = each.value.name
   namespace_name      = azurerm_notification_hub_namespace.hub_namespace.name
   resource_group_name = var.resource_group_name
   location            = var.location
   dynamic "apns_credential" {
-    for_each = each.value.apns_credential
+    for_each = each.value.apns_credential == null ? {} : each.value.apns_credential
     content {
       application_mode = each.value.apns_credential.application_mode
       bundle_id        = each.value.apns_credential.bundle_id
@@ -33,7 +33,7 @@ resource "azurerm_notification_hub" "hub" {
     }
   }
   dynamic "gcm_credential" {
-    for_each = each.value.gcm_credential
+    for_each = each.value.gcm_credential == null ? {} : each.value.gcm_credential
     content {
       api_key = each.value.gcm_credential.api_key
     }

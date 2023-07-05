@@ -22,7 +22,7 @@ Note: The `?ref=***` refers a tag on the git module repo.
 
 ```hcl
 module "<ntfns-name>" {
-  source = "git::https://dev.azure.com/timbrasil/Projeto_IaC/_git/azr-module-notification-hub?ref=v1.0.0"
+  source = "git::https://github.com/danilomnds/terraform-azurerm-notification-hub?ref=v1.0.0"
   namespace_name = "<ntfns-name>"
   location = "<location>"
   resource_group_name  = "<resource-group-name>"
@@ -33,14 +33,14 @@ module "<ntfns-name>" {
     "key2" = "value2"    
   }
   # optional (creation of the eventhub)
-  hubs_parameters = [
-    {
-      name = <nft-env-system>
-    },
-    { 
+  hubs_parameters = {
+    <nft-env-system> = {
       name = <nft-env-system>
     }
-  ]    
+    <nft-env-system2> = {
+      name = <nft-env-system2>
+    }
+  }
   azure_ad_groups = ["group id 1"]
 }
 output "ntfns_name" {
