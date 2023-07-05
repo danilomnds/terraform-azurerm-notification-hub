@@ -54,19 +54,6 @@ resource "azurerm_role_assignment" "hub_namespace" {
     for k, v in toset(var.azure_ad_groups) : k => v
   }
   scope                = azurerm_notification_hub_namespace.hub_namespace.id
-  role_definition_name = "Reader"
-  principal_id         = each.value
-}
-
-resource "azurerm_role_assignment" "hub" {
-  depends_on = [
-    azurerm_notification_hub_namespace.hub_namespace
-  ]
-  for_each = {
-    for k, v in toset(var.azure_ad_groups) : k => v
-    if var.hubs_parameters != null
-  }
-  scope                = azurerm_storage_account.sta.id
   role_definition_name = "Notification Hub Custom"
   principal_id         = each.value
 }
